@@ -1,6 +1,8 @@
 {
   "scripts": {
     "dev": "nodemon -w src ./src/app.ts",
+    "start": "node ./dist/app.js",
+    "build": "./node_modules/typescript/bin/tsc",
     "prisma:migrate": "npx prisma migrate dev && npx prisma generate",
     "prisma:seed": "npx prisma db seed",
     "prisma:pull": "npx prisma db pull",
