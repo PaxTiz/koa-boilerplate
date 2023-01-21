@@ -8,11 +8,14 @@ import compress from "koa-compress";
 import helmet from "koa-helmet";
 import morgan from "koa-morgan";
 import config from "./config";
+import errorHandler from "./core/errors/error_handler";
 
 import authRouter from "./api/auth/router";
 
 const main = async () => {
   const app = new Koa();
+
+  app.use(errorHandler);
 
   app.use(morgan("dev"));
   app.use(helmet());

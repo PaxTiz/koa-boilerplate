@@ -9,4 +9,7 @@ export default {
   corsOrigins: process.env.CORS_ORIGINS?.split(","),
 
   prismaLogs: process.env.PRISMA_LOGS === "true",
+
+  logtailToken: process.env.LOGTAIL_TOKEN!,
+  enableRemoteLogging: process.env.ENABLE_REMOTE_LOGGING === "true",
 };
