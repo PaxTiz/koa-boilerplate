@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 export default {
   environment: process.env.NODE_ENV ?? "development",
 

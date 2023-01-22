@@ -6,7 +6,9 @@
     "prisma:migrate": "npx prisma migrate dev && npx prisma generate",
     "prisma:seed": "npx prisma db seed",
     "prisma:pull": "npx prisma db pull",
-    "prisma:generate": "npx prisma generate"
+    "prisma:generate": "npx prisma generate",
+    "lint": "./node_modules/eslint/bin/eslint.js '*/**/*.{js,ts}' --quiet",
+    "lint:fix": "./node_modules/eslint/bin/eslint.js '*/**/*.{js,ts}' --quiet --fix"
   },
   "prisma": {
     "seed": "ts-node ./prisma/seed.ts"

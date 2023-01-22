@@ -1,15 +1,12 @@
 import { RouterContext } from "@koa/router";
 import { Schema } from "joi";
-import { Context } from "koa";
+import { Context, Next } from "koa";
 import FormError from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
 import userService from "../core/services/user_service";
 import { Unauthenticated } from "./controller";
 
-export const isAuthenticated = async (
-  context: RouterContext,
-  next: Function
-) => {
+export const isAuthenticated = async (context: RouterContext, next: Next) => {
   const authorizationHeader = context.headers.authorization;
   if (!authorizationHeader) {
     return Unauthenticated(context);
@@ -63,7 +60,7 @@ const validateSchema = (schema: Schema, object: any): Array<FormError> => {
 };
 
 export const validate = (schemas: ValidateSchema) => {
-  return (context: RouterContext & Context, next: Function) => {
+  return (context: RouterContext & Context, next: Next) => {
     let allErrors: Array<FormError> = [];
 
     if (schemas.body) {
