@@ -20,7 +20,7 @@ const main = async () => {
   app.use(morgan("dev"));
   app.use(helmet());
   app.use(compress());
-  app.use(bodyParser());
+  app.use(bodyParser({ multipart: true }));
   app.use(
     cors({
       allowMethods: ["GET", "POST", "PUT", "PATCH", "HEAD"],
