@@ -7,6 +7,8 @@ export default {
 
   jwtSecret: process.env.JWT_SECRET!,
   bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) ?? 10,
+  pbkdfSalt: process.env.PBKDF_SALT!,
+  pbkdfIterationsCount: Number(process.env.PBKDF_ITERATIONS_COUNT) ?? 100000,
 
   corsOrigins: process.env.CORS_ORIGINS?.split(","),
 
