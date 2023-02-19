@@ -266,6 +266,21 @@
     "@babel/parser" "^7.1.0"
     "@babel/types" "^7.0.0"
 
+"@types/babel__generator@^7.6.4":
+  version "7.6.4"
+  resolved "https://registry.yarnpkg.com/@types/babel__generator/-/babel__generator-7.6.4.tgz#1f20ce4c5b1990b37900b63f050182d28c2439b7"
+  integrity sha512-tFkciB9j2K755yrTALxD44McOrk+gfpIpvC3sxHjRawj6PfnQxrse4Clq5y/Rq+G3mrBurMax/lG8Qn2t9mSsg==
+  dependencies:
+    "@babel/types" "^7.0.0"
+
+"@types/babel__template@^7.4.1":
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/@types/babel__template/-/babel__template-7.4.1.tgz#3d1a48fd9d6c0edfd56f2ff578daed48f36c8969"
+  integrity sha512-azBFKemX6kMg5Io+/rdGT0dkGreboUVR0Cdm3fz9QJWpaQGJRQXl7C+6hOTCZcMll7KFyEQpgbYI2lHdsS4U7g==
+  dependencies:
+    "@babel/parser" "^7.1.0"
+    "@babel/types" "^7.0.0"
+
 "@types/babel__traverse@7.0.4":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.0.4.tgz#de652399bd8493ab712e4d6b68031b7a2f72ad5f"
@@ -1553,9 +1568,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 joi@^17.7.0:
-  version "17.8.0"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-17.8.0.tgz#6b2dd135eaffd93e46e2a3bcfc652cc6b4a163e4"
-  integrity sha512-2XKR4IFBiB15t/HBx73Xc0/2/X05++GW/mDpNVOb96EscWFx13Rf9sfaTOa9i53F6AKtRPCtX53kfOTDddVL/Q==
+  version "17.8.1"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.8.1.tgz#82f08b9b7b16e770537914155e78f3fe185b9d18"
+  integrity sha512-Zoafe6E2kQ+hkkJQSBnOxA8beb2LF33keCxZP3vSy7qTHj9/2GAEQ9KLwfe+PR35WvspwNz0jWajDIHLnCKfpg==
   dependencies:
     "@hapi/address" "^5.1.0"
     "@hapi/formula" "^3.0.2"
