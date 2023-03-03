@@ -63,6 +63,7 @@ type FileValidator = {
   required?: boolean;
 };
 type ValidateSchema = {
+  before?: Array<(context: RouterContext) => Promise<RouterContext>>;
   body?: Schema;
   params?: Schema;
   query?: Schema;
@@ -88,7 +89,13 @@ const validateSchema = (object: any, schema?: Schema): Array<FormError> => {
 };
 
 export const validate = (schemas: ValidateSchema) => {
-  return (context: RouterContext & Context, next: Next) => {
+  return async (context: RouterContext & Context, next: Next) => {
+    if (schemas.before) {
+      for (const func of schemas.before) {
+        await func(context);
+      }
+    }
+
     const allErrors = [
       ...validateSchema(context.request.body, schemas.body),
       ...validateSchema(context.params, schemas.params),
