@@ -1,5 +1,13 @@
+import { Prisma } from "@prisma/client";
 import { Context, Next } from "koa";
-import { InternalServerError } from "../../api/controller";
+import {
+  Forbidden,
+  ForbiddenException,
+  InternalServerError,
+  NotFound,
+  Unauthenticated,
+  UnauthenticatedException,
+} from "../../api/controller";
 import config from "../../config";
 import logger from "../../logger";
 
@@ -8,6 +16,7 @@ export default async (context: Context, next: Next) => {
     await next();
     logger.info(`OK: ${context.response.status}`);
   } catch (err) {
+    console.error(err);
     if (config.enableRemoteLogging) {
       const userInfo = context.state.user
         ? {
@@ -19,6 +28,19 @@ export default async (context: Context, next: Next) => {
       logger.error((err as Error) ?? "Internal Server Error", {
         user: userInfo,
       });
+    }
+
+    if (err instanceof UnauthenticatedException) {
+      return Unauthenticated(context);
+    }
+    if (err instanceof ForbiddenException) {
+      return Forbidden(context);
+    }
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2025"
+    ) {
+      return NotFound(context);
     }
 
     return InternalServerError(context);

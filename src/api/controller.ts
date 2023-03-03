@@ -13,12 +13,14 @@ export function BadRequest(context: Context, message: string) {
   return context;
 }
 
+export class UnauthenticatedException extends Error {}
 export function Unauthenticated(context: Context) {
   context.response.status = 401;
   context.response.body = { message: "not_authenticated" };
   return context;
 }
 
+export class ForbiddenException extends Error {}
 export function Forbidden(context: Context) {
   context.response.status = 403;
   context.response.body = { message: "forbidden" };
