@@ -23,14 +23,16 @@ const main = async () => {
   app.use(bodyParser({ multipart: true }));
   app.use(
     cors({
+      credentials: true,
       allowMethods: ["GET", "POST", "PUT", "PATCH", "HEAD"],
       origin(context) {
         const header = context.headers.origin;
-        if (!header || header === "localhost") {
-          return "localhost";
+        if (!header) {
+          throw new Error("Origin not allowed");
         }
 
-        if (config.corsOrigins?.includes(header)) {
+        const domain = new URL(header).hostname;
+        if (config.corsOrigins?.includes(domain)) {
           return header;
         }
 
