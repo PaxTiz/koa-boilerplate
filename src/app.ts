@@ -29,7 +29,7 @@ const main = async () => {
       origin(context) {
         const header = context.headers.origin;
         if (!header) {
-          throw new Error("Origin not allowed");
+          return "localhost";
         }
 
         const domain = new URL(header).hostname;
