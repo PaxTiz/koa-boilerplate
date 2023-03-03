@@ -1,7 +1,11 @@
 import Joi from "joi";
-import { validate } from "../middleware";
+import { isAuthenticated, validate } from "../middleware";
 
 export default {
+  me: validate({
+    before: [isAuthenticated],
+  }),
+
   login: validate({
     body: Joi.object({
       email: Joi.string().email().required(),
