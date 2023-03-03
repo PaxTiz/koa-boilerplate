@@ -10,7 +10,6 @@ export default {
       where: { email },
     });
 
-    console.log(user);
     if (!user || !(await compare(password, user.password))) {
       return new FormError("email", "invalid_credentials");
     }
