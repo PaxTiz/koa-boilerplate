@@ -1,4 +1,6 @@
 import { RouterContext } from "@koa/router";
+import FormError from "../../core/errors/form_error";
+import { setCookie } from "../../core/security/jwt";
 import service from "../../core/services/auth_service";
 import { ServiceResponse } from "../controller";
 import { RegisterInterface } from "./types";
@@ -11,6 +13,10 @@ export default {
   async login(context: RouterContext) {
     const { email, password } = context.request.body;
     const response = await service.login(email, password);
+    if (!(response instanceof FormError)) {
+      setCookie(context, response.token);
+    }
+
     return ServiceResponse(context, response);
   },
 

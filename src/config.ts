@@ -2,6 +2,8 @@
 
 export default {
   environment: process.env.NODE_ENV ?? "development",
+  appKeys: process.env.APP_KEYS!.split(","),
+  cookieDomain: process.env.COOKIE_DOMAIN,
 
   port: Number(process.env.PORT),
 

@@ -14,6 +14,7 @@ import authRouter from "./api/auth/router";
 
 const main = async () => {
   const app = new Koa();
+  app.keys = config.appKeys;
 
   app.use(errorHandler);
 

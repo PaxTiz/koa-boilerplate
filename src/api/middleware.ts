@@ -7,7 +7,7 @@ import userService from "../core/services/user_service";
 import { ForbiddenException, UnauthenticatedException } from "./controller";
 
 const getTokenFromContext = (context: RouterContext) => {
-  const cookie = context.cookies.get("token");
+  const cookie = context.cookies.get("token", { signed: true });
   if (cookie) {
     return cookie;
   }

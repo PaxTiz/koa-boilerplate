@@ -19,6 +19,7 @@
     "@logtail/node": "^0.1.15",
     "@prisma/client": "^4.10.1",
     "bcrypt": "^5.1.0",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
