@@ -2,6 +2,7 @@
 PORT=3000
 APP_KEYS="key1,key2,key3"
 COOKIE_DOMAIN=localhost
+WEB_URL=http://localhost:3000
 
 CORS_ORIGINS=localhost
 
@@ -19,6 +20,7 @@ ENABLE_PRISMA_LOGS=true
 # Emails
 ENABLE_GLOBAL_EMAILS=true
 SENDINBLUE_API_KEY=""
+EMAIL_DEFAULT_FROM=hello@google.com
 
 
 # Logs

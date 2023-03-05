@@ -4,10 +4,12 @@ export default {
   environment: process.env.NODE_ENV ?? "development",
   appKeys: process.env.APP_KEYS!.split(","),
   cookieDomain: process.env.COOKIE_DOMAIN,
+  webUrl: process.env.WEB_URL!,
 
   port: Number(process.env.PORT),
 
   sibApiKey: process.env.SIB_API_KEY!,
+  defaultFromEmail: process.env.EMAIL_DEFAULT_FROM!,
 
   jwtSecret: process.env.JWT_SECRET!,
   bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) ?? 10,
