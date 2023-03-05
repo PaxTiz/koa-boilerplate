@@ -13,7 +13,6 @@ import errorHandler from "./core/errors/error_handler";
 import setupCron from "./core/cron";
 
 import authRouter from "./api/auth/router";
-import usersRouter from "./api/user/router";
 
 const main = async () => {
   await setupCron();
@@ -48,7 +47,6 @@ const main = async () => {
   );
 
   app.use(authRouter.routes()).use(authRouter.allowedMethods());
-  app.use(usersRouter.routes()).use(usersRouter.allowedMethods());
 
   app.listen(config.port);
   console.log(`🚀 Server started on port ${config.port}`);

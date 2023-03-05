@@ -20,4 +20,18 @@ export default {
       password: Joi.string().min(8).required(),
     }),
   }),
+
+  forgotPassword: validate({
+    body: Joi.object({
+      email: Joi.string().email().required(),
+    }),
+  }),
+
+  resetPassword: validate({
+    body: Joi.object({
+      email: Joi.string().email().required(),
+      token: Joi.string().required(),
+      password: Joi.string().required(),
+    }),
+  }),
 };
