@@ -77,8 +77,12 @@ const formatErrors = (errors: Record<string, any>) => {
 };
 
 const validateSchema = (object: any, schema?: Schema): Array<FormError> => {
-  if (!schema || !object) {
+  if (!schema) {
     return [];
+  }
+
+  if (!object) {
+    object = {};
   }
 
   const errors = schema.validate(object, {
