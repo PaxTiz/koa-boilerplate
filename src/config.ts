@@ -7,6 +7,8 @@ export default {
 
   port: Number(process.env.PORT),
 
+  sibApiKey: process.env.SIB_API_KEY!,
+
   jwtSecret: process.env.JWT_SECRET!,
   bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) ?? 10,
   pbkdfSalt: process.env.PBKDF_SALT!,
@@ -14,7 +16,8 @@ export default {
 
   corsOrigins: process.env.CORS_ORIGINS?.split(","),
 
-  prismaLogs: process.env.PRISMA_LOGS === "true",
+  enablePrismaLogs: process.env.ENABLE_PRISMA_LOGS === "true",
+  enableGlobalEmails: process.env.ENABLE_GLOBAL_EMAILS === "true",
 
   logtailToken: process.env.LOGTAIL_TOKEN!,
   enableRemoteLogging: process.env.ENABLE_REMOTE_LOGGING === "true",

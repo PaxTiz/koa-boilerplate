@@ -1,14 +1,30 @@
+# Server
 PORT=3000
 APP_KEYS="key1,key2,key3"
 COOKIE_DOMAIN=localhost
 
-DATABASE_URL="mysql://root:root@localhost:3306/sample_koa"
-
 CORS_ORIGINS=localhost
-
-PRISMA_LOGS=true
 
 JWT_SECRET=abcd
 BCRYPT_SALT_ROUNDS=10
+PBKDF_SALT=7609A08B-4295-4EE2-B907-41A52DBB2943
+PBKDF_ITERATIONS_COUNT=109624
 
+
+# Database
+DATABASE_URL="mysql://root:root@localhost:3306/sample_koa"
+ENABLE_PRISMA_LOGS=true
+
+
+# Emails
+ENABLE_GLOBAL_EMAILS=true
+SENDINBLUE_API_KEY=""
+
+
+# Logs
+ENABLE_REMOTE_LOGGING=false
+LOGTAIL_TOKEN=""
+
+
+# Cron
 CRON_RESET_PASSWORD_DELAY=15
