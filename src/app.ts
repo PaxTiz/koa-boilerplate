@@ -10,9 +10,13 @@ import morgan from "koa-morgan";
 import config from "./config";
 import errorHandler from "./core/errors/error_handler";
 
+import setupCron from "./core/cron";
+
 import authRouter from "./api/auth/router";
 
 const main = async () => {
+  await setupCron();
+
   const app = new Koa();
   app.keys = config.appKeys;
 

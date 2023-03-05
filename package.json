@@ -28,9 +28,11 @@
     "koa-compress": "^5.1.0",
     "koa-helmet": "^6.1.0",
     "koa-morgan": "^1.0.1",
+    "node-cron": "^3.0.2",
     "sharp": "^0.31.3"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.7",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__template": "^7.4.1",
     "@types/bcrypt": "^5.0.0",

@@ -18,11 +18,13 @@ model Role {
 }
 
 model User {
-  id       String @id @default(uuid())
-  username String @db.VarChar(255)
-  password String @db.VarChar(255)
-  email    String @db.VarChar(255)
-  roleId   String @db.VarChar(36)
+  id                     String    @id @default(uuid())
+  username               String    @db.VarChar(255)
+  password               String    @db.VarChar(255)
+  email                  String    @db.VarChar(255)
+  roleId                 String    @db.VarChar(36)
+  resetPasswordToken     String?   @unique
+  resetPasswordLastCheck DateTime?
 
   role Role @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

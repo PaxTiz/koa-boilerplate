@@ -18,4 +18,8 @@ export default {
 
   logtailToken: process.env.LOGTAIL_TOKEN!,
   enableRemoteLogging: process.env.ENABLE_REMOTE_LOGGING === "true",
+
+  cron: {
+    resetPasswordDelay: parseInt(process.env.CRON_RESET_PASSWORD_DELAY!),
+  },
 };
