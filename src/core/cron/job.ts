@@ -1,7 +1,10 @@
 import cron from "node-cron";
+import config from "../../config";
 
 const log = (key: string, message: string) => {
-  console.log(`[CRON:${key}] ${message}`);
+  if (config.cron.enableTaskLogs) {
+    console.log(`[CRON:${key}] ${message}`);
+  }
 };
 
 export const job = async (key: string, task: () => Promise<void>) => {
