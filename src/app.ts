@@ -29,7 +29,7 @@ const main = async () => {
   app.use(
     cors({
       credentials: true,
-      allowMethods: ["GET", "POST", "PUT", "PATCH", "HEAD"],
+      allowMethods: ["GET", "POST", "PUT", "PATCH", "HEAD", "DELETE"],
       origin(context) {
         const header = context.headers.origin;
         if (!header) {
