@@ -22,7 +22,6 @@
     "bcrypt": "^5.1.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
-    "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.0",
     "just-template": "^2.2.0",
     "koa": "^2.14.1",
@@ -31,7 +30,8 @@
     "koa-helmet": "^6.1.0",
     "koa-morgan": "^1.0.1",
     "node-cron": "^3.0.2",
-    "sharp": "^0.31.3"
+    "sharp": "^0.31.3",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/babel__generator": "^7.6.4",

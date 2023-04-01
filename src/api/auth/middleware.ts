@@ -1,4 +1,4 @@
-import Joi from "joi";
+import z from "zod";
 import { isAuthenticated, validate } from "../middleware";
 
 export default {
@@ -7,31 +7,39 @@ export default {
   }),
 
   login: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    }).required(),
+    body: z
+      .object({
+        email: z.string().email(),
+        password: z.string(),
+      })
+      .strict(),
   }),
 
   register: validate({
-    body: Joi.object({
-      username: Joi.string().min(8),
-      email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
-    }),
+    body: z
+      .object({
+        username: z.string().min(8),
+        email: z.string().email(),
+        password: z.string().min(8),
+      })
+      .strict(),
   }),
 
   forgotPassword: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-    }),
+    body: z
+      .object({
+        email: z.string().email(),
+      })
+      .strict(),
   }),
 
   resetPassword: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      token: Joi.string().required(),
-      password: Joi.string().required(),
-    }),
+    body: z
+      .object({
+        email: z.string().email(),
+        token: z.string(),
+        password: z.string().min(8),
+      })
+      .strict(),
   }),
 };
