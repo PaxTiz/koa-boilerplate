@@ -12,6 +12,7 @@ import errorHandler from "./core/errors/error_handler";
 
 import setupCron from "./core/cron";
 
+import assetsRputer from "./api/assets/router";
 import authRouter from "./api/auth/router";
 
 const main = async () => {
@@ -47,6 +48,7 @@ const main = async () => {
   );
 
   app.use(authRouter.routes()).use(authRouter.allowedMethods());
+  app.use(assetsRputer.routes()).use(assetsRputer.allowedMethods());
 
   app.listen(config.port);
   console.log(`🚀 Server started on port ${config.port}`);

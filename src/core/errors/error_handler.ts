@@ -5,6 +5,7 @@ import {
   ForbiddenException,
   InternalServerError,
   NotFound,
+  NotFoundException,
   Unauthenticated,
   UnauthenticatedException,
 } from "../../api/controller";
@@ -35,6 +36,9 @@ export default async (context: Context, next: Next) => {
     }
     if (err instanceof ForbiddenException) {
       return Forbidden(context);
+    }
+    if (err instanceof NotFoundException) {
+      return NotFound(context);
     }
     if (
       err instanceof Prisma.PrismaClientKnownRequestError &&
