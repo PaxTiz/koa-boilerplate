@@ -80,7 +80,6 @@ export default {
           await send({
             template: "forgot_password",
             subject: "Reset your password",
-            from: { email: config.defaultFromEmail },
             to: [{ name: user.username, email: user.email }],
             data: {
               fullname: user.username,

@@ -19,7 +19,7 @@ export const send = (data: SendEmailInterface) => {
 
   const email = new SendSmtpEmail();
   email.subject = data.subject;
-  email.sender = data.from;
+  email.sender = data.from ?? { email: config.defaultFromEmail };
   email.to = data.to;
   email.cc = data.cc;
   email.replyTo = data.replyTo;
