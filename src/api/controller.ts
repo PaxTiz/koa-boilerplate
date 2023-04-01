@@ -27,6 +27,7 @@ export function Forbidden(context: Context) {
   return context;
 }
 
+export class NotFoundException extends Error {}
 export function NotFound(context: Context) {
   context.response.status = 404;
   context.response.body = { message: "not_found" };
@@ -52,12 +53,15 @@ export function InternalServerError(context: Context) {
   return context;
 }
 
-export function File(context: Context, file: Buffer, filename?: string) {
+export function File(
+  context: Context,
+  options: { file: Buffer; filename: string; download?: boolean }
+) {
   context.response.status = 200;
-  context.response.body = file;
-  if (filename) {
-    context.attachment(filename);
-  }
+  context.response.body = options.file;
+  context.attachment(options.filename, {
+    type: options.download ? "attachment" : "inline",
+  });
 
   return context;
 }
