@@ -20,7 +20,12 @@ export default task(
 
     for (const user of users) {
       const date = dayjs(user.resetPasswordLastCheck);
-      if (dayjs() > date.add(config.cron.resetPasswordDelay, "minutes")) {
+      const expirationDate = date.add(
+        config.cron.resetPasswordLinkDuration,
+        "minutes"
+      );
+
+      if (dayjs() > expirationDate) {
         await database.user.update({
           where: { id: user.id },
           data: {

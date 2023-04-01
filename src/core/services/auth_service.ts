@@ -85,7 +85,7 @@ export default {
             data: {
               fullname: user.username,
               url: `${config.webUrl}/auth/reset-password?token=${resetPasswordToken}`,
-              duration: config.cron.resetPasswordDelay,
+              duration: config.cron.resetPasswordLinkDuration,
             },
           });
         });

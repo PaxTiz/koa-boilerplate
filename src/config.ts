@@ -27,5 +27,8 @@ export default {
   cron: {
     enableTaskLogs: process.env.ENABLE_TASK_LOGS === "true",
     resetPasswordDelay: parseInt(process.env.CRON_RESET_PASSWORD_DELAY!),
+    resetPasswordLinkDuration: parseInt(
+      process.env.CRON_RESET_PASSWORD_LINK_DURATION!
+    ),
   },
 };
