@@ -1,6 +1,6 @@
 import { RouterContext } from "@koa/router";
+import { Schema } from "joi";
 import { Context, Next } from "koa";
-import { Schema, ZodError } from "zod";
 import FormError from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
 import userService from "../core/services/user_service";
@@ -70,9 +70,9 @@ type ValidateSchema = {
   files?: Record<string, FileValidator>;
 };
 
-const formatErrors = (error: ZodError) => {
-  return error.issues.map(
-    (error: any) => new FormError(error.path[0], error.message)
+const formatErrors = (errors: Record<string, any>) => {
+  return errors.details.map(
+    (error: any) => new FormError(error.context.key, error.message)
   );
 };
 
@@ -85,8 +85,11 @@ const validateSchema = (object: any, schema?: Schema): Array<FormError> => {
     object = {};
   }
 
-  const zodResult = schema.safeParse(object);
-  return !zodResult.success ? formatErrors(zodResult.error) : [];
+  const errors = schema.validate(object, {
+    abortEarly: false,
+  });
+
+  return errors.error ? formatErrors(errors.error) : [];
 };
 
 export const validate = (schemas: ValidateSchema) => {
