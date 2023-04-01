@@ -25,6 +25,7 @@ export default {
   enableRemoteLogging: process.env.ENABLE_REMOTE_LOGGING === "true",
 
   cron: {
+    isEnabled: process.env.ENABLE_CRON === "true",
     enableTaskLogs: process.env.ENABLE_TASK_LOGS === "true",
     resetPasswordDelay: parseInt(process.env.CRON_RESET_PASSWORD_DELAY!),
     resetPasswordLinkDuration: parseInt(
