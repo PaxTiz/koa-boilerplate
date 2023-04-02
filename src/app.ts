@@ -37,8 +37,7 @@ const main = async () => {
           return "localhost";
         }
 
-        const domain = new URL(header).hostname;
-        if (config.corsOrigins?.includes(domain)) {
+        if (config.corsOrigins?.includes(header)) {
           return header;
         }
 
