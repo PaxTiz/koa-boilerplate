@@ -15,7 +15,10 @@ import logger from "../../logger";
 export default async (context: Context, next: Next) => {
   try {
     await next();
-    logger.info(`OK: ${context.response.status}`);
+
+    if (config.enableRemoteLogging) {
+      logger.info(`OK: ${context.response.status}`);
+    }
   } catch (err) {
     console.error(err);
     if (config.enableRemoteLogging) {
