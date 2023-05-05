@@ -9,36 +9,16 @@ import {
   Unauthenticated,
   UnauthenticatedException,
 } from "../../api/controller";
-import config from "../../config";
-import logger from "../../logger";
+import { logger } from "../../logger";
+
+const _logger = logger("api");
 
 export default async (context: Context, next: Next) => {
   try {
     await next();
-
-    if (config.enableRemoteLogging) {
-      logger.info(`OK: ${context.response.status}`);
-    }
   } catch (err) {
-    console.error(err);
-    if (config.enableRemoteLogging) {
-      const userInfo = context.state.user
-        ? {
-            id: context.state.user.id,
-            email: context.state.user.email,
-            role: context.state.user.role.name,
-          }
-        : null;
-      logger.error((err as Error) ?? "Internal Server Error", {
-        user: userInfo,
-      });
-    }
-
     if (err instanceof UnauthenticatedException) {
       return Unauthenticated(context);
-    }
-    if (err instanceof ForbiddenException) {
-      return Forbidden(context);
     }
     if (err instanceof NotFoundException) {
       return NotFound(context);
@@ -48,6 +28,20 @@ export default async (context: Context, next: Next) => {
       err.code === "P2025"
     ) {
       return NotFound(context);
+    }
+
+    /**
+     * Logs error only if it's a `real` error
+     *  - 401 are because a JWT Token is invalid
+     *  - 404 are because something was not found
+     *
+     *  - 403 means someone tries to do something he's not supposed to
+     *  - 500 means the somerhing on the server is broken
+     */
+    _logger.error(err);
+
+    if (err instanceof ForbiddenException) {
+      return Forbidden(context);
     }
 
     return InternalServerError(context);

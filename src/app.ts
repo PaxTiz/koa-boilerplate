@@ -12,8 +12,11 @@ import errorHandler from "./core/errors/error_handler";
 
 import setupRouters from "./api/router";
 import setupCron from "./core/cron";
+import { setupBetterConsole, setupLogger } from "./logger";
 
 const main = async () => {
+  setupBetterConsole();
+  setupLogger();
   await setupCron();
 
   const app = new Koa();

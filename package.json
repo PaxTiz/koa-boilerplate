@@ -17,10 +17,10 @@
   "dependencies": {
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
-    "@logtail/node": "^0.1.15",
     "@prisma/client": "^4.10.1",
     "@sendinblue/client": "^3.2.2",
     "bcrypt": "^5.1.0",
+    "consola": "^3.1.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "joi": "^17.9.1",
@@ -32,6 +32,8 @@
     "koa-helmet": "^6.1.0",
     "koa-morgan": "^1.0.1",
     "node-cron": "^3.0.2",
+    "pino": "^8.12.1",
+    "pino-pretty": "^10.0.0",
     "sharp": "^0.31.3"
   },
   "devDependencies": {

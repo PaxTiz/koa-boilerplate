@@ -1,6 +1,7 @@
 node_modules/
 dist/
 upload/
+logs/
 
 .env
 yarn-error.log

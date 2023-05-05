@@ -23,11 +23,6 @@ SENDINBLUE_API_KEY=""
 EMAIL_DEFAULT_FROM=hello@google.com
 
 
-# Logs
-ENABLE_REMOTE_LOGGING=false
-LOGTAIL_TOKEN=""
-
-
 # Cron
 ENABLE_CRON=false
 ENABLE_TASK_LOGS=false
