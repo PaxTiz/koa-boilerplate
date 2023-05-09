@@ -1,4 +1,5 @@
 import {
+  LoginInterface,
   RegisterInterface,
   ResetPasswordInterface,
 } from "../../api/auth/types";
@@ -11,12 +12,12 @@ import { generate } from "../security/jwt";
 import { randomString } from "../security/random";
 
 export default {
-  async login(email: string, password: string) {
+  async login(login: LoginInterface) {
     const user = await database.user.findFirst({
-      where: { email },
+      where: { email: login.email },
     });
 
-    if (!user || !(await compare(password, user.password))) {
+    if (!user || !(await compare(login.password, user.password))) {
       return new FormError("email", "invalid_credentials");
     }
 

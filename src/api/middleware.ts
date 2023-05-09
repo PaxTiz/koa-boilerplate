@@ -1,10 +1,17 @@
 import { RouterContext } from "@koa/router";
-import { Schema } from "joi";
 import { Context, Next } from "koa";
+import { ZodError, ZodSchema } from "zod";
 import FormError from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
 import userService from "../core/services/user_service";
 import { ForbiddenException, UnauthenticatedException } from "./controller";
+
+type JsonDecode = { body: Record<string, any> };
+type ZodContext = {
+  body: JsonDecode;
+  params: JsonDecode;
+  query: JsonDecode;
+};
 
 const getTokenFromContext = (context: RouterContext) => {
   const cookie = context.cookies.get("token", { signed: true });
@@ -62,34 +69,38 @@ type FileValidator = {
   /** Mark the file as required, send error if not provided */
   required?: boolean;
 };
-type ValidateSchema = {
+export type ValidateSchema = {
   before?: Array<(context: RouterContext) => Promise<RouterContext>>;
-  body?: Schema;
-  params?: Schema;
-  query?: Schema;
+  body?: ZodSchema;
+  params?: ZodSchema;
+  query?: ZodSchema;
   files?: Record<string, FileValidator>;
 };
 
-const formatErrors = (errors: Record<string, any>) => {
-  return errors.details.map(
-    (error: any) => new FormError(error.context.key, error.message)
+const formatErrors = (error: ZodError) => {
+  return error.errors.map(
+    (error) => new FormError(error.path[0].toString(), error.code)
   );
 };
 
-const validateSchema = (object: any, schema?: Schema): Array<FormError> => {
-  if (!schema) {
+type SchemaValidation = {
+  object: unknown;
+  schema?: ZodSchema;
+  context: Context;
+  key: keyof ZodContext;
+};
+const validateSchema = (validator: SchemaValidation) => {
+  if (!validator.schema) {
     return [];
   }
 
-  if (!object) {
-    object = {};
+  const validation = validator.schema.safeParse(validator.object || {});
+  if (validation.success) {
+    validator.context.zod[validator.key] = validation.data;
+    return [];
+  } else {
+    return formatErrors(validation.error);
   }
-
-  const errors = schema.validate(object, {
-    abortEarly: false,
-  });
-
-  return errors.error ? formatErrors(errors.error) : [];
 };
 
 export const validate = (schemas: ValidateSchema) => {
@@ -100,10 +111,27 @@ export const validate = (schemas: ValidateSchema) => {
       }
     }
 
+    context.zod = {} as ZodContext;
+
     const allErrors = [
-      ...validateSchema(context.request.body, schemas.body),
-      ...validateSchema(context.params, schemas.params),
-      ...validateSchema(context.request.query, schemas.query),
+      ...validateSchema({
+        context,
+        key: "body",
+        object: context.request.body,
+        schema: schemas.body,
+      }),
+      ...validateSchema({
+        context,
+        key: "params",
+        object: context.params,
+        schema: schemas.params,
+      }),
+      ...validateSchema({
+        context,
+        key: "query",
+        object: context.request.query,
+        schema: schemas.query,
+      }),
     ];
 
     if (schemas.files) {

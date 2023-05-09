@@ -1,11 +1,8 @@
-export type FileTransformationsInterface = {
-  width?: number;
-  height?: number;
-  format?: "webp" | "png" | "jpeg";
-  quality?: number;
-};
+import { z } from "zod";
+import { getFile } from "./middleware";
 
-export type FindSingleAssetInterface = {
-  path: string;
+export type FileTransformationsInterface = z.infer<typeof getFile.query>;
+
+export type FindSingleAssetInterface = z.infer<typeof getFile.params> & {
   transformations: FileTransformationsInterface;
 };

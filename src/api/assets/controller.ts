@@ -6,15 +6,8 @@ import { FindSingleAssetInterface } from "./types";
 export default {
   async getFile(context: RouterContext) {
     const options = {
-      path: context.params.path,
-      transformations: {
-        format: context.query.format,
-        width: context.query.width ? Number(context.query.width) : undefined,
-        height: context.query.height ? Number(context.query.height) : undefined,
-        quality: context.query.quality
-          ? Number(context.query.quality)
-          : undefined,
-      },
+      path: context.zod.params.path,
+      transformations: context.zod.query,
     } as FindSingleAssetInterface;
 
     const file = await service.getFile(options);

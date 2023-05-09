@@ -1,37 +1,45 @@
-import Joi from "joi";
+import { z } from "zod";
 import { isAuthenticated, validate } from "../middleware";
+
+export const login = {
+  body: z.object({
+    email: z.string().email(),
+    password: z.string(),
+  }),
+};
+
+export const register = {
+  body: z.object({
+    username: z.string().min(8),
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
+};
+
+export const forgotPassword = {
+  body: z.object({
+    email: z.string().email(),
+  }),
+};
+
+export const resetPassword = {
+  body: z.object({
+    token: z.string(),
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
+};
 
 export default {
   me: validate({
     before: [isAuthenticated],
   }),
 
-  login: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    }),
-  }),
+  login: validate(login),
 
-  register: validate({
-    body: Joi.object({
-      username: Joi.string().min(8).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().min(8).required(),
-    }),
-  }),
+  register: validate(register),
 
-  forgotPassword: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-    }),
-  }),
+  forgotPassword: validate(forgotPassword),
 
-  resetPassword: validate({
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      token: Joi.string().required(),
-      password: Joi.string().min(8).required(),
-    }),
-  }),
+  resetPassword: validate(resetPassword),
 };

@@ -3,7 +3,11 @@ import FormError from "../../core/errors/form_error";
 import { setCookie } from "../../core/security/jwt";
 import service from "../../core/services/auth_service";
 import { ServiceResponse } from "../controller";
-import { RegisterInterface, ResetPasswordInterface } from "./types";
+import {
+  LoginInterface,
+  RegisterInterface,
+  ResetPasswordInterface,
+} from "./types";
 
 export default {
   me(context: RouterContext) {
@@ -11,8 +15,8 @@ export default {
   },
 
   async login(context: RouterContext) {
-    const { email, password } = context.request.body;
-    const response = await service.login(email, password);
+    const body = context.zod.body as LoginInterface;
+    const response = await service.login(body);
     if (!(response instanceof FormError)) {
       setCookie(context, response.token);
     }
@@ -21,19 +25,19 @@ export default {
   },
 
   async register(context: RouterContext) {
-    const user = context.request.body as RegisterInterface;
+    const user = context.zod.body as RegisterInterface;
     const response = await service.register(user);
     return ServiceResponse(context, response, 201);
   },
 
   async forgotPassword(context: RouterContext) {
-    const email = context.request.body.email;
+    const email = context.zod.body.email;
     const response = await service.forgotPassword(email);
     return ServiceResponse(context, response);
   },
 
   async resetPassword(context: RouterContext) {
-    const body = context.request.body as ResetPasswordInterface;
+    const body = context.zod.body as ResetPasswordInterface;
     const response = await service.resetPassword(body);
     return ServiceResponse(context, response);
   },

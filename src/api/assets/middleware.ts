@@ -1,16 +1,18 @@
-import Joi from "joi";
+import { z } from "zod";
 import { validate } from "../middleware";
 
-export default {
-  getFile: validate({
-    params: Joi.object({
-      path: Joi.string().required(),
-    }),
-    query: Joi.object({
-      width: Joi.number().positive().optional(),
-      height: Joi.number().positive().optional(),
-      format: Joi.string().allow("png", "jpeg", "webp").optional(),
-      quality: Joi.number().positive().max(100).optional(),
-    }),
+export const getFile = {
+  params: z.object({
+    path: z.string(),
   }),
+  query: z.object({
+    width: z.coerce.number().positive().optional(),
+    height: z.coerce.number().positive().optional(),
+    format: z.enum(["png", "jpeg", "webp"]).optional(),
+    quality: z.coerce.number().positive().max(100).optional(),
+  }),
+};
+
+export default {
+  getFile: validate(getFile),
 };
