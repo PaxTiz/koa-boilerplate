@@ -29,14 +29,14 @@ export default {
   async register(user: RegisterInterface) {
     const errors = [];
 
-    const usernameExists = await database.user.findFirst({
+    const usernameExists = await database.user.count({
       where: { username: user.username },
     });
     if (usernameExists) {
       errors.push(new FormError("username", "username_already_exists"));
     }
 
-    const emailExists = await database.user.findFirst({
+    const emailExists = await database.user.count({
       where: { email: user.email },
     });
     if (emailExists) {
@@ -60,9 +60,7 @@ export default {
           roleId: role.id,
         },
       })
-      .then((inserted) => ({
-        token: generate({ id: inserted.id }),
-      }));
+      .then(() => ({ message: "user_created" }));
   },
 
   async forgotPassword(email: string) {
@@ -95,13 +93,9 @@ export default {
   },
 
   async resetPassword(data: ResetPasswordInterface) {
-    const user = await database.user.findFirst({
+    const user = await database.user.findFirstOrThrow({
       where: { email: data.email, resetPasswordToken: data.token },
     });
-
-    if (!user) {
-      return null;
-    }
 
     return database.user
       .update({
