@@ -9,9 +9,9 @@ import {
   Unauthenticated,
   UnauthenticatedException,
 } from "../../api/controller";
-import { logger } from "../../logger";
+import { useLogger } from "../../logger";
 
-const _logger = logger("api");
+const logger = useLogger("api");
 
 export default async (context: Context, next: Next) => {
   try {
@@ -38,7 +38,7 @@ export default async (context: Context, next: Next) => {
      *  - 403 means someone tries to do something he's not supposed to
      *  - 500 means the somerhing on the server is broken
      */
-    _logger.error(err);
+    logger.error(err);
 
     if (err instanceof ForbiddenException) {
       return Forbidden(context);

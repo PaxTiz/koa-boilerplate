@@ -22,20 +22,27 @@ export const setupLogger = () => {
   }
 };
 
-export const logger = (service: string) => {
+export const useLogger = (service: string) => {
   const streams: Array<StreamEntry> = [
     {
       level: "trace",
-      stream: createWriteStream(join(logsDirectory, "all")),
+      stream: pretty({
+        destination: createWriteStream(join(logsDirectory, "all")),
+      }),
     },
     {
       level: "error",
-      stream: createWriteStream(join(logsDirectory, "error")),
+      stream: pretty({
+        destination: createWriteStream(join(logsDirectory, "error")),
+      }),
     },
   ];
 
   if (config.environment === "development") {
-    streams.push({ stream: pretty(), level: "trace" });
+    streams.push({
+      stream: pretty(),
+      level: "trace",
+    });
   }
 
   return pino({ level: "trace" }, pino.multistream(streams)).child({ service });
