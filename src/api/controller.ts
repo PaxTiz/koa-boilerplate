@@ -1,5 +1,5 @@
 import { Context } from "koa";
-import FormError from "../core/errors/form_error";
+import { FormError, isFormError } from "../core/errors/form_error";
 
 export function Ok(context: Context, data: unknown, status = 200) {
   context.response.status = status;
@@ -38,7 +38,7 @@ export function UnprocessableEntity(
   context: Context,
   errors: Array<FormError> | FormError
 ) {
-  if (errors instanceof FormError) {
+  if (!Array.isArray(errors)) {
     errors = [errors];
   }
 
@@ -72,10 +72,8 @@ export function ServiceResponse(context: Context, data: unknown, status = 200) {
   }
 
   if (
-    data instanceof FormError ||
-    (Array.isArray(data) &&
-      data.length > 0 &&
-      data.every((e) => e instanceof FormError))
+    isFormError(data) ||
+    (Array.isArray(data) && isFormError(data) && data.length > 0)
   ) {
     return UnprocessableEntity(context, data);
   }

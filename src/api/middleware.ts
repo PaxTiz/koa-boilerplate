@@ -1,7 +1,7 @@
 import { RouterContext } from "@koa/router";
 import { Context, Next } from "koa";
 import { ZodError, ZodSchema } from "zod";
-import FormError from "../core/errors/form_error";
+import { createFormError } from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
 import userService from "../core/services/user_service";
 import { ForbiddenException, UnauthenticatedException } from "./controller";
@@ -78,8 +78,8 @@ export type ValidateSchema = {
 };
 
 const formatErrors = (error: ZodError) => {
-  return error.errors.map(
-    (error) => new FormError(error.path[0].toString(), error.code)
+  return error.errors.map((error) =>
+    createFormError(error.path[0].toString(), error.code)
   );
 };
 
@@ -138,7 +138,7 @@ export const validate = (schemas: ValidateSchema) => {
       const files = context.request.files;
       for (const [fileKey, validator] of Object.entries(schemas.files)) {
         if (validator.required && (!files || !files[fileKey])) {
-          allErrors.push(new FormError(fileKey, "file_required"));
+          allErrors.push(createFormError(fileKey, "file_required"));
           continue;
         }
 
@@ -168,18 +168,18 @@ export const validate = (schemas: ValidateSchema) => {
 
 const validateFile = (fileKey: string, validator: FileValidator, file: any) => {
   if (validator.size && file.size > validator.size) {
-    return new FormError(fileKey, "file_too_big");
+    return createFormError(fileKey, "file_too_big");
   }
 
   if (validator.mimeTypes) {
     if (!file.mimetype) {
-      return new FormError(fileKey, "invalid_file");
+      return createFormError(fileKey, "invalid_file");
     }
 
     if (typeof validator.mimeTypes === "function") {
       const response = validator.mimeTypes(file.mimetype);
       if (response) {
-        return new FormError(fileKey, response);
+        return createFormError(fileKey, response);
       }
     }
 
@@ -188,7 +188,7 @@ const validateFile = (fileKey: string, validator: FileValidator, file: any) => {
       : [validator.mimeTypes];
 
     if (!mimeTypes.includes(file.mimetype)) {
-      return new FormError(fileKey, "file_type_invalid");
+      return createFormError(fileKey, "file_type_invalid");
     }
   }
 };

@@ -6,7 +6,7 @@ import {
 import config from "../../config";
 import database from "../database";
 import { send } from "../email";
-import FormError from "../errors/form_error";
+import { createFormError } from "../errors/form_error";
 import { compare, hash } from "../security/bcrypt";
 import { generate } from "../security/jwt";
 import { randomString } from "../security/random";
@@ -18,7 +18,7 @@ export default {
     });
 
     if (!user || !(await compare(login.password, user.password))) {
-      return new FormError("email", "invalid_credentials");
+      return createFormError("email", "invalid_credentials");
     }
 
     return {
@@ -33,14 +33,14 @@ export default {
       where: { username: user.username },
     });
     if (usernameExists) {
-      errors.push(new FormError("username", "username_already_exists"));
+      errors.push(createFormError("username", "username_already_exists"));
     }
 
     const emailExists = await database.user.count({
       where: { email: user.email },
     });
     if (emailExists) {
-      errors.push(new FormError("email", "email_already_exists"));
+      errors.push(createFormError("email", "email_already_exists"));
     }
 
     if (errors.length) {
