@@ -14,7 +14,9 @@
     "emitDecoratorMetadata": true
   },
   "exclude": [
+    "*.config.ts",
     "node_modules",
+    "tests",
     "prisma"
   ]
 }

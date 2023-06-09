@@ -9,7 +9,8 @@
     "prisma:generate": "npx prisma generate",
     "prisma:push": "npx prisma db push",
     "lint": "./node_modules/eslint/bin/eslint.js '*/**/*.{js,ts}' --quiet",
-    "lint:fix": "./node_modules/eslint/bin/eslint.js '*/**/*.{js,ts}' --quiet --fix"
+    "lint:fix": "./node_modules/eslint/bin/eslint.js '*/**/*.{js,ts}' --quiet --fix",
+    "test": "vitest --config vitest.config.ts"
   },
   "prisma": {
     "seed": "ts-node ./prisma/seed.ts"
@@ -49,6 +50,7 @@
     "@types/sharp": "^0.31.1",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
+    "@vitest/ui": "^0.32.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -56,6 +58,7 @@
     "prettier": "^2.8.3",
     "prisma": "^4.14.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.32.0"
   }
 }
