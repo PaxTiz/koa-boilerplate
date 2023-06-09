@@ -18,7 +18,7 @@
   "dependencies": {
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
-    "@prisma/client": "^4.14.0",
+    "@prisma/client": "^4.15.0",
     "@sendinblue/client": "^3.2.2",
     "bcrypt": "^5.1.0",
     "consola": "^3.1.0",
@@ -56,7 +56,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
-    "prisma": "^4.14.0",
+    "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4",
     "vitest": "^0.32.0"
