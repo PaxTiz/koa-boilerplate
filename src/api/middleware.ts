@@ -45,18 +45,26 @@ const _verifyUser = async (context: RouterContext, name: string) => {
 
     const user = await userService.findByIdOrThrow(decodedToken.id);
     context.state.user = userService.safeUser(user);
-    return context;
+    return { context, decodedToken, token };
   } catch {
     throw new UnauthenticatedException();
   }
 };
 
 export const isAuthenticated = async (context: RouterContext) => {
-  return _verifyUser(context, config.jwt.accessToken.cookie);
+  return _verifyUser(context, config.jwt.accessToken.cookie).then(
+    (res) => res.context
+  );
 };
 
 export const hasRefreshToken = async (context: RouterContext) => {
-  return _verifyUser(context, config.jwt.refreshToken.cookie);
+  const { context: ctx, token } = await _verifyUser(
+    context,
+    config.jwt.refreshToken.cookie
+  );
+
+  await userService.checkRefreshTokenValidity(ctx.state.user.id, token);
+  return ctx;
 };
 
 export const hasRole = (...roles: Array<string>) => {

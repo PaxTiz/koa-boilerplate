@@ -14,15 +14,23 @@ import { randomString } from "../security/random";
 
 export default {
   async refreshAuthenticationTokens(user: User) {
+    const refreshToken = generate(
+      { id: user.id, tokenType: "refreshToken" },
+      config.jwt.refreshToken.expiration
+    );
+
+    await database.refreshRoken.create({
+      data: {
+        userId: user.id,
+        token: await hash(refreshToken),
+      },
+    });
     return {
       accessToken: generate(
         { id: user.id, tokenType: "accessToken" },
         config.jwt.accessToken.expiration
       ),
-      refreshToken: generate(
-        { id: user.id, tokenType: "refreshToken" },
-        config.jwt.refreshToken.expiration
-      ),
+      refreshToken,
     };
   },
 
