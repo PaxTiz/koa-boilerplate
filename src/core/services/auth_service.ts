@@ -23,6 +23,7 @@ export default {
       data: {
         userId: user.id,
         token: await hash(refreshToken),
+        expiresAt: config.jwt.refreshToken.expirationAsDate,
       },
     });
     return {

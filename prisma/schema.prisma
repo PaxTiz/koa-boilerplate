@@ -31,9 +31,10 @@ model User {
 }
 
 model RefreshRoken {
-  id     String @id @default(cuid())
-  token  String
-  userId String @db.VarChar(36)
+  id        String   @id @default(cuid())
+  token     String
+  expiresAt DateTime
+  userId    String   @db.VarChar(36)
 
   user User @relation(fields: [userId], references: [id])
 }

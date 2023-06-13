@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import dayjs from "dayjs";
 import { UnauthenticatedException } from "../../api/controller";
 import database from "../database";
 import { compare } from "../security/bcrypt";
@@ -26,7 +27,15 @@ export default {
       where: { userId },
     });
 
+    const now = dayjs();
     for (const hash of tokens) {
+      if (now > dayjs(hash.expiresAt)) {
+        await database.refreshRoken.delete({
+          where: { id: hash.id },
+        });
+        continue;
+      }
+
       if (await compare(token, hash.token)) {
         return true;
       }
