@@ -1,15 +1,23 @@
 import { RouterContext } from "@koa/router";
-import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import config from "../../config";
 
-export const setCookie = (context: RouterContext, value: string) => {
+interface SetCookieInterface {
+  value: string;
+  cookie: string;
+  expiration: Date;
+}
+
+export const setCookie = (
+  context: RouterContext,
+  options: SetCookieInterface
+) => {
   const url = new URL(context.origin);
-  context.cookies.set("token", value, {
+  context.cookies.set(options.cookie, options.value, {
     domain: config.cookieDomain,
     secure: url.protocol === "https",
     httpOnly: url.protocol === "https",
-    expires: dayjs().add(3, "hours").toDate(),
+    expires: options.expiration,
     signed: true,
   });
 };

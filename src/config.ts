@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
+import dayjs from "dayjs";
+
 export default {
   environment: process.env.NODE_ENV ?? "development",
   appKeys: process.env.APP_KEYS!.split(","),
@@ -20,6 +22,19 @@ export default {
 
   enablePrismaLogs: process.env.ENABLE_PRISMA_LOGS === "true",
   enableGlobalEmails: process.env.ENABLE_GLOBAL_EMAILS === "true",
+
+  jwt: {
+    accessToken: {
+      cookie: "accessToken",
+      expiration: "1min",
+      expirationAsDate: dayjs().add(1, "minutes").toDate(),
+    },
+    refreshToken: {
+      cookie: "refreshToken",
+      expiration: "30d",
+      expirationAsDate: dayjs().add(30, "days").toDate(),
+    },
+  },
 
   cron: {
     isEnabled: process.env.ENABLE_CRON === "true",

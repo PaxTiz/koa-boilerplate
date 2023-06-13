@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isAuthenticated, validate } from "../middleware";
+import { hasRefreshToken, isAuthenticated, validate } from "../middleware";
 
 export const login = {
   body: z.object({
@@ -30,6 +30,10 @@ export const resetPassword = {
   }),
 };
 
+export const refreshToken = {
+  before: [hasRefreshToken],
+};
+
 export default {
   me: validate({
     before: [isAuthenticated],
@@ -42,4 +46,6 @@ export default {
   forgotPassword: validate(forgotPassword),
 
   resetPassword: validate(resetPassword),
+
+  refreshToken: validate(refreshToken),
 };

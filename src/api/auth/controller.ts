@@ -1,4 +1,5 @@
 import { RouterContext } from "@koa/router";
+import config from "../../config";
 import { isFormError } from "../../core/errors/form_error";
 import { setCookie } from "../../core/security/jwt";
 import service from "../../core/services/auth_service";
@@ -18,7 +19,7 @@ export default {
     const body = context.zod.body as LoginInterface;
     const response = await service.login(body);
     if (!isFormError(response)) {
-      setCookie(context, response.token);
+      attachTokens(context, response);
     }
 
     return ServiceResponse(context, response);
@@ -41,4 +42,29 @@ export default {
     const response = await service.resetPassword(body);
     return ServiceResponse(context, response);
   },
+
+  async refreshToken(context: RouterContext) {
+    const response = await service.refreshAuthenticationTokens(
+      context.state.user
+    );
+
+    attachTokens(context, response);
+    return ServiceResponse(context, response);
+  },
+};
+
+const attachTokens = (
+  context: RouterContext,
+  tokens: { accessToken: string; refreshToken: string }
+) => {
+  setCookie(context, {
+    value: tokens.accessToken,
+    cookie: config.jwt.accessToken.cookie,
+    expiration: config.jwt.accessToken.expirationAsDate,
+  });
+  setCookie(context, {
+    value: tokens.refreshToken,
+    cookie: config.jwt.refreshToken.cookie,
+    expiration: config.jwt.refreshToken.expirationAsDate,
+  });
 };

@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import {
   LoginInterface,
   RegisterInterface,
@@ -12,6 +13,19 @@ import { generate } from "../security/jwt";
 import { randomString } from "../security/random";
 
 export default {
+  async refreshAuthenticationTokens(user: User) {
+    return {
+      accessToken: generate(
+        { id: user.id, tokenType: "accessToken" },
+        config.jwt.accessToken.expiration
+      ),
+      refreshToken: generate(
+        { id: user.id, tokenType: "refreshToken" },
+        config.jwt.refreshToken.expiration
+      ),
+    };
+  },
+
   async login(login: LoginInterface) {
     const user = await database.user.findFirst({
       where: { email: login.email },
@@ -21,9 +35,7 @@ export default {
       return createFormError("email", "invalid_credentials");
     }
 
-    return {
-      token: generate({ id: user.id }),
-    };
+    return this.refreshAuthenticationTokens(user);
   },
 
   async register(user: RegisterInterface) {

@@ -1,6 +1,7 @@
 import { RouterContext } from "@koa/router";
 import { Context, Next } from "koa";
 import { ZodError, ZodSchema } from "zod";
+import config from "../config";
 import { createFormError } from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
 import userService from "../core/services/user_service";
@@ -13,8 +14,10 @@ type ZodContext = {
   query: JsonDecode;
 };
 
-const getTokenFromContext = (context: RouterContext) => {
-  const cookie = context.cookies.get("token", { signed: true });
+const getTokenFromContext = (context: RouterContext, name: string) => {
+  const cookie = context.cookies.get(name, {
+    signed: true,
+  });
   if (cookie) {
     return cookie;
   }
@@ -32,16 +35,28 @@ const getTokenFromContext = (context: RouterContext) => {
   return token;
 };
 
-export const isAuthenticated = async (context: RouterContext) => {
+const _verifyUser = async (context: RouterContext, name: string) => {
   try {
-    const token = getTokenFromContext(context);
-    const decodedToken = verify(token) as { id: string };
+    const token = getTokenFromContext(context, name);
+    const decodedToken = verify(token) as { id: string; tokenType: string };
+    if (decodedToken.tokenType !== name) {
+      throw new Error("Invalid token type: " + decodedToken.tokenType);
+    }
+
     const user = await userService.findByIdOrThrow(decodedToken.id);
     context.state.user = userService.safeUser(user);
     return context;
   } catch {
     throw new UnauthenticatedException();
   }
+};
+
+export const isAuthenticated = async (context: RouterContext) => {
+  return _verifyUser(context, config.jwt.accessToken.cookie);
+};
+
+export const hasRefreshToken = async (context: RouterContext) => {
+  return _verifyUser(context, config.jwt.refreshToken.cookie);
 };
 
 export const hasRole = (...roles: Array<string>) => {

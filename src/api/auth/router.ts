@@ -8,6 +8,7 @@ router.get("/me", middleware.me, controller.me);
 
 router.post("/login", middleware.login, controller.login);
 router.post("/register", middleware.register, controller.register);
+router.post("/refresh", middleware.refreshToken, controller.refreshToken);
 router.post(
   "/forgot-password",
   middleware.forgotPassword,
