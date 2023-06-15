@@ -27,14 +27,14 @@ model User {
   resetPasswordLastCheck DateTime?
 
   role          Role           @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  refreshTokens RefreshRoken[]
+  refreshTokens RefreshToken[]
 }
 
-model RefreshRoken {
+model RefreshToken {
   id        String   @id @default(cuid())
   token     String
   expiresAt DateTime
   userId    String   @db.VarChar(36)
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
