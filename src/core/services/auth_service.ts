@@ -19,7 +19,7 @@ export default {
       config.jwt.refreshToken.expiration
     );
 
-    await database.refreshRoken.create({
+    await database.refreshToken.create({
       data: {
         userId: user.id,
         token: await hash(refreshToken),

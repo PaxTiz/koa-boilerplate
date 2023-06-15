@@ -23,14 +23,14 @@ export default {
   },
 
   async checkRefreshTokenValidity(userId: string, token: string) {
-    const tokens = await database.refreshRoken.findMany({
+    const tokens = await database.refreshToken.findMany({
       where: { userId },
     });
 
     const now = dayjs();
     for (const hash of tokens) {
       if (now > dayjs(hash.expiresAt)) {
-        await database.refreshRoken.delete({
+        await database.refreshToken.delete({
           where: { id: hash.id },
         });
         continue;
