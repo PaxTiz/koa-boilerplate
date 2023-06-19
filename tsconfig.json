@@ -11,7 +11,8 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "strict": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "importHelpers": true
   },
   "exclude": [
     "*.config.ts",
