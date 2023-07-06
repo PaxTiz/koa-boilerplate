@@ -1,4 +1,5 @@
 import { User } from "@prisma/client";
+import { hash as ohash } from "ohash";
 import {
   LoginInterface,
   RegisterInterface,
@@ -10,7 +11,6 @@ import { send } from "../email";
 import { createFormError } from "../errors/form_error";
 import { compare, hash } from "../security/bcrypt";
 import { generate } from "../security/jwt";
-import { randomString } from "../security/random";
 
 export default {
   async refreshAuthenticationTokens(user: User) {
@@ -90,7 +90,7 @@ export default {
     });
 
     if (user) {
-      const resetPasswordToken = await this._getRandomPasswordToken();
+      const resetPasswordToken = ohash({ email: user.email });
       await database.user
         .update({
           data: { resetPasswordToken },
@@ -140,18 +140,5 @@ export default {
 
         return { message: "password_updated" };
       });
-  },
-
-  async _getRandomPasswordToken() {
-    do {
-      const token = randomString(64);
-      const count = await database.user.count({
-        where: { resetPasswordToken: token },
-      });
-
-      if (count === 0) {
-        return token;
-      }
-    } while (true);
   },
 };
