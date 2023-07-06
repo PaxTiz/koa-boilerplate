@@ -103,7 +103,7 @@ export default {
             to: [{ name: user.username, email: user.email }],
             data: {
               fullname: user.username,
-              url: `${config.webUrl}/auth/reset-password?token=${resetPasswordToken}`,
+              url: `${config.app.webUrl}/auth/reset-password?token=${resetPasswordToken}`,
               duration: config.cron.resetPasswordLinkDuration,
             },
           });
@@ -131,7 +131,7 @@ export default {
         await send({
           template: "reset_password",
           subject: "Your password has been updated",
-          from: { email: config.defaultFromEmail },
+          from: { email: config.email.defaultFrom },
           to: [{ name: user.username, email: user.email }],
           data: {
             fullname: user.username,

@@ -12,6 +12,7 @@ import errorHandler from "./core/errors/error_handler";
 
 import setupRouters from "./api/router";
 import setupCron from "./core/cron";
+import { isValidOrigin } from "./core/security/cors";
 import { setupBetterConsole, setupLogger } from "./logger";
 
 const main = async () => {
@@ -20,7 +21,7 @@ const main = async () => {
   await setupCron();
 
   const app = new Koa();
-  app.keys = config.appKeys;
+  app.keys = config.app.keys;
 
   app.use(errorHandler);
 
@@ -32,25 +33,14 @@ const main = async () => {
     cors({
       credentials: true,
       allowMethods: ["GET", "POST", "PUT", "PATCH", "HEAD", "DELETE"],
-      origin(context) {
-        const header = context.headers.origin;
-        if (!header) {
-          return "localhost";
-        }
-
-        if (config.corsOrigins?.includes(header)) {
-          return header;
-        }
-
-        throw new Error("Origin not allowed");
-      },
+      origin: isValidOrigin,
     })
   );
 
   await setupRouters(app);
 
-  app.listen(config.port);
-  console.log(`🚀 Server started on port ${config.port}`);
+  app.listen(config.app.port);
+  console.log(`🚀 Server started on port ${config.app.port}`);
 };
 
 main();

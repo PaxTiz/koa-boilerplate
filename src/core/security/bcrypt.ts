@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import config from "../../config";
 
 export const hash = async (value: any) => {
-  const salt = await bcrypt.genSalt(config.bcryptSaltRounds);
+  const salt = await bcrypt.genSalt(config.security.bcrypt.saltRounds);
   return bcrypt.hash(value, salt);
 };
 

@@ -3,27 +3,34 @@
 import dayjs from "dayjs";
 
 export default {
-  environment: process.env.NODE_ENV ?? "development",
-  appKeys: process.env.APP_KEYS!.split(","),
-  cookieDomain: process.env.COOKIE_DOMAIN,
-  webUrl: process.env.WEB_URL!,
+  app: {
+    environment: process.env.NODE_ENV ?? "development",
+    keys: process.env.APP_KEYS!.split(","),
+    cookieDomain: process.env.COOKIE_DOMAIN,
+    webUrl: process.env.WEB_URL!,
+    port: Number(process.env.PORT),
+    corsOrigins: process.env.CORS_ORIGINS?.split(",") ?? ["localhost"],
+  },
 
-  port: Number(process.env.PORT),
+  database: {
+    enablePrismaLogs: process.env.ENABLE_PRISMA_LOGS === "true",
+  },
 
-  sibApiKey: process.env.SIB_API_KEY!,
-  defaultFromEmail: process.env.EMAIL_DEFAULT_FROM!,
+  email: {
+    apiKey: process.env.SIB_API_KEY!,
+    defaultFrom: process.env.EMAIL_DEFAULT_FROM!,
+    enabled: process.env.ENABLE_GLOBAL_EMAILS === "true",
+  },
 
-  jwtSecret: process.env.JWT_SECRET!,
-  bcryptSaltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) ?? 10,
-  pbkdfSalt: process.env.PBKDF_SALT!,
-  pbkdfIterationsCount: Number(process.env.PBKDF_ITERATIONS_COUNT) ?? 100000,
-
-  corsOrigins: process.env.CORS_ORIGINS?.split(","),
-
-  enablePrismaLogs: process.env.ENABLE_PRISMA_LOGS === "true",
-  enableGlobalEmails: process.env.ENABLE_GLOBAL_EMAILS === "true",
+  security: {
+    bcrypt: {
+      saltRounds: Number(process.env.BCRYPT_SALT_ROUNDS) ?? 10,
+    },
+  },
 
   jwt: {
+    secret: process.env.JWT_SECRET!,
+
     accessToken: {
       cookie: "accessToken",
       expiration: "1min",

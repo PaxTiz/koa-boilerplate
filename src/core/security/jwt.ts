@@ -14,7 +14,7 @@ export const setCookie = (
 ) => {
   const url = new URL(context.origin);
   context.cookies.set(options.cookie, options.value, {
-    domain: config.cookieDomain,
+    domain: config.app.cookieDomain,
     secure: url.protocol === "https",
     httpOnly: url.protocol === "https",
     expires: options.expiration,
@@ -23,11 +23,11 @@ export const setCookie = (
 };
 
 export const generate = (value: any, expiration = "3h") => {
-  return jwt.sign(value, config.jwtSecret, { expiresIn: expiration });
+  return jwt.sign(value, config.jwt.secret, { expiresIn: expiration });
 };
 
 export const verify = (token: string): unknown => {
-  return jwt.verify(token, config.jwtSecret, (err, data) => {
+  return jwt.verify(token, config.jwt.secret, (err, data) => {
     if (err) {
       throw err;
     }

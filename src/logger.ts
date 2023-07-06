@@ -8,7 +8,7 @@ import config from "./config";
 const logsDirectory = join(__dirname, "..", "logs");
 
 export const setupBetterConsole = () => {
-  if (config.environment !== "development") {
+  if (config.app.environment !== "development") {
     // Keep default console on non-dev environments
     return;
   }
@@ -38,7 +38,7 @@ export const useLogger = (service: string) => {
     },
   ];
 
-  if (config.environment === "development") {
+  if (config.app.environment === "development") {
     streams.push({
       stream: pretty(),
       level: "trace",

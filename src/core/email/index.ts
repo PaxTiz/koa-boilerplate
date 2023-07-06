@@ -10,16 +10,19 @@ import config from "../../config";
 import { SendEmailInterface } from "./types";
 
 const apiInstance = new TransactionalEmailsApi();
-apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, config.sibApiKey);
+apiInstance.setApiKey(
+  TransactionalEmailsApiApiKeys.apiKey,
+  config.email.apiKey
+);
 
 export const send = (data: SendEmailInterface) => {
-  if (!config.enableGlobalEmails) {
+  if (!config.email.enabled) {
     return;
   }
 
   const email = new SendSmtpEmail();
   email.subject = data.subject;
-  email.sender = data.from ?? { email: config.defaultFromEmail };
+  email.sender = data.from ?? { email: config.email.defaultFrom };
   email.to = data.to;
   email.cc = data.cc;
   email.replyTo = data.replyTo;
