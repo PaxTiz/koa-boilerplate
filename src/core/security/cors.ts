@@ -7,7 +7,8 @@ export const isValidOrigin = (context: Context) => {
     throw new Error("Origin not allowed");
   }
 
-  if (config.app.corsOrigins.includes(origin)) {
+  const domain = new URL(origin).hostname;
+  if (config.app.corsOrigins.includes(domain)) {
     return origin;
   }
 
