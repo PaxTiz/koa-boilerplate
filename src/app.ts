@@ -11,6 +11,7 @@ import config from "./config";
 import errorHandler from "./core/errors/error_handler";
 
 import setupRouters from "./api/router";
+import { setupPermissions } from "./core/authorization";
 import setupCron from "./core/cron";
 import { isValidOrigin } from "./core/security/cors";
 import { setupBetterConsole, setupLogger } from "./logger";
@@ -19,6 +20,7 @@ const main = async () => {
   setupBetterConsole();
   setupLogger();
   await setupCron();
+  await setupPermissions();
 
   const app = new Koa();
   app.keys = config.app.keys;
