@@ -1,6 +1,6 @@
 import { RouterContext } from "@koa/router";
 import { Context, Next } from "koa";
-import { ZodError, ZodSchema } from "zod";
+import { ZodError, ZodObject, ZodSchema } from "zod";
 import config from "../config";
 import { createFormError } from "../core/errors/form_error";
 import { verify } from "../core/security/jwt";
@@ -102,7 +102,7 @@ export type ValidateSchema = {
 
 const formatErrors = (error: ZodError) => {
   return error.errors.map((error) =>
-    createFormError(error.path[0].toString(), error.code)
+    createFormError(error.path[0]?.toString(), error.code)
   );
 };
 
@@ -117,7 +117,12 @@ const validateSchema = (validator: SchemaValidation) => {
     return [];
   }
 
-  const validation = validator.schema.safeParse(validator.object || {});
+  const schema =
+    validator.schema instanceof ZodObject
+      ? validator.schema.strict()
+      : validator.schema;
+
+  const validation = schema.safeParse(validator.object || {});
   if (validation.success) {
     validator.context.zod[validator.key] = validation.data;
     return [];
