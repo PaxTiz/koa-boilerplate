@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { hash as ohash } from "ohash";
 import {
+  ForgotPassword,
   LoginInterface,
   RegisterInterface,
   ResetPasswordInterface,
@@ -84,9 +85,9 @@ export default {
       .then(() => ({ message: "user_created" }));
   },
 
-  async forgotPassword(email: string) {
+  async forgotPassword(body: ForgotPassword) {
     const user = await database.user.findFirst({
-      where: { email },
+      where: { email: body.email },
     });
 
     if (user) {

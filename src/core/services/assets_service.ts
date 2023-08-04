@@ -15,7 +15,7 @@ export default {
     const file = await this._readFile(options.path);
     const buffer = sharp(file, { limitInputPixels: false });
     if (await this._canApplyTransformations(buffer)) {
-      return this._applyTransformations(buffer, options.transformations);
+      return this._applyTransformations(buffer, options);
     }
 
     return file;

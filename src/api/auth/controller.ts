@@ -1,10 +1,12 @@
 import { RouterContext } from "@koa/router";
 import config from "../../config";
 import { isFormError } from "../../core/errors/form_error";
+import { parseRequest } from "../../core/requests/parse_request";
 import { setCookie } from "../../core/security/jwt";
 import service from "../../core/services/auth_service";
 import { ServiceResponse } from "../controller";
 import {
+  ForgotPassword,
   LoginInterface,
   RegisterInterface,
   ResetPasswordInterface,
@@ -16,7 +18,7 @@ export default {
   },
 
   async login(context: RouterContext) {
-    const body = context.zod.body as LoginInterface;
+    const body = parseRequest<LoginInterface>(context);
     const response = await service.login(body);
     if (!isFormError(response)) {
       attachTokens(context, response);
@@ -26,19 +28,19 @@ export default {
   },
 
   async register(context: RouterContext) {
-    const user = context.zod.body as RegisterInterface;
+    const user = parseRequest<RegisterInterface>(context);
     const response = await service.register(user);
     return ServiceResponse(context, response, 201);
   },
 
   async forgotPassword(context: RouterContext) {
-    const email = context.zod.body.email;
-    const response = await service.forgotPassword(email);
+    const body = parseRequest<ForgotPassword>(context);
+    const response = await service.forgotPassword(body);
     return ServiceResponse(context, response);
   },
 
   async resetPassword(context: RouterContext) {
-    const body = context.zod.body as ResetPasswordInterface;
+    const body = parseRequest<ResetPasswordInterface>(context);
     const response = await service.resetPassword(body);
     return ServiceResponse(context, response);
   },
