@@ -2,10 +2,7 @@ import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import sharp, { Sharp } from "sharp";
-import {
-  FileTransformationsInterface,
-  FindSingleAssetInterface,
-} from "../../api/assets/types";
+import { FindSingleAssetInterface } from "../../api/assets/types";
 import { NotFoundException } from "../../api/controller";
 
 const publicPath = join(__dirname, "..", "..", "..", "upload", "public");
@@ -41,7 +38,7 @@ export default {
 
   async _applyTransformations(
     data: Sharp,
-    transformations: FileTransformationsInterface
+    transformations: FindSingleAssetInterface
   ) {
     try {
       if (transformations.format) {

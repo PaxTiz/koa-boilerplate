@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { getFile } from "./middleware";
 
-export type FileTransformationsInterface = z.infer<typeof getFile.query>;
+const getFileSchema = getFile.query.merge(getFile.params);
 
-export type FindSingleAssetInterface = z.infer<typeof getFile.params> &
-  FileTransformationsInterface;
+export type FindSingleAssetInterface = z.infer<typeof getFileSchema>;
